@@ -33,28 +33,58 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         updateMaze(mazeLayout, 21, 13);
 
-        button = findViewById(R.id.button3);
+        buttonright = findViewById(R.id.buttonright);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttondown = findViewById(R.id.buttondown);
+
+        buttonleft = findViewById(R.id.buttonleft);
+
+        buttonup = findViewById(R.id.buttonup);
+
+        buttonright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Call the moveRight function
-//                CharSequence text = "Hello toast!";
-//                int duration = Toast.LENGTH_SHORT;
-//                Toast toast = Toast.makeText(MainActivity.this,text, duration);
-//                toast.show();
                 moveRight();
             }
         });
 
+        buttondown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveDown function
+                moveDown();
+            }
+        });
 
+        buttonleft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveLeft function
+                moveLeft();
+            }
+        });
+
+
+        buttonup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveUp function
+                moveUp();
+            }
+        });
     }
 
 
 
     public static int score = 0;
 
-    private Button button;
+    private Button buttonright;
+    private Button buttondown;
+
+    private Button buttonleft;
+
+    private Button buttonup;
 
     static int[][] mazeArray = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
@@ -137,40 +167,57 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveRight() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
-        if (mazeArray[pacmanPositionX][pacmanPositionY] > 0) {
-            pacmanPositionX += 1;
-            if (mazeArray[pacmanPositionX][pacmanPositionY] == 2) {
-                mazeArray[pacmanPositionX][pacmanPositionY] = 1;
+        if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
+            if ((pacmanPositionX + 1 < 13) && (mazeArray[pacmanPositionY][pacmanPositionX + 1] != 0)) {
+                pacmanPositionX += 1;
                 score++;
-                updateMaze(mazeLayout, 21, 13);
+                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                    updateMaze(mazeLayout, 21, 13);
+                }
             }
         }
-
-        if (pacmanPositionX > 13) {
-            pacmanPositionX = 13;
-        }
-
     }
 
     public void moveLeft() {
-        pacmanPositionX -= 1;
-        if (pacmanPositionX < 0) {
-            pacmanPositionX = 0;
+        RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
+        if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
+            if ((pacmanPositionX + 1 < 13) && (mazeArray[pacmanPositionY][pacmanPositionX - 1] != 0)) {
+                pacmanPositionX -= 1;
+                score++;
+                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                    updateMaze(mazeLayout, 21, 13);
+                }
+            }
         }
     }
 
     public void moveDown() {
-        pacmanPositionY += 1;
-        if (pacmanPositionY > 21) {
-            pacmanPositionY = 21;
+        RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
+        if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
+            if ((pacmanPositionY + 1 < 21) && (mazeArray[pacmanPositionY + 1][pacmanPositionX] != 0)) {
+                pacmanPositionY += 1;
+                score++;
+                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                    updateMaze(mazeLayout, 21, 13);
+                }
+            }
         }
-
     }
 
     public void moveUp() {
-        pacmanPositionY -= 1;
-        if (pacmanPositionY < 0) {
-            pacmanPositionY = 0;
+        RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
+        if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
+            if ((pacmanPositionY + 1 < 21) && (mazeArray[pacmanPositionY - 1][pacmanPositionX] != 0)) {
+                pacmanPositionY -= 1;
+                score++;
+                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                    updateMaze(mazeLayout, 21, 13);
+                }
+            }
         }
 
     }

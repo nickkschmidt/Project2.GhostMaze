@@ -118,6 +118,7 @@
             android:background="#2196F3" />
 
         <View
+            android:id="@+id/viewbottom"
             android:layout_width="321dp"
             android:layout_height="20dp"
             android:layout_marginLeft="50dp"
@@ -244,10 +245,40 @@
             android:src="@drawable/pacman" />
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            android:id="@+id/buttonright"
+            android:layout_width="105dp"
+            android:layout_height="58dp"
+            android:layout_below="@id/viewbottom"
+            android:layout_marginTop="50dp"
+            android:text="Right" />
+
+        <Button
+            android:id="@+id/buttondown"
+            android:layout_width="105dp"
+            android:layout_height="58dp"
+            android:layout_below="@id/viewbottom"
+            android:layout_toRightOf="@id/buttonright"
+            android:layout_marginTop="50dp"
+            android:text="Down" />
+
+        <Button
+            android:id="@+id/buttonleft"
+            android:layout_width="105dp"
+            android:layout_height="58dp"
+            android:layout_below="@id/viewbottom"
+            android:layout_toRightOf="@id/buttondown"
+            android:layout_marginTop="50dp"
+            android:text="Left" />
+
+        <Button
+            android:id="@+id/buttonup"
+            android:layout_width="105dp"
+            android:layout_height="58dp"
+            android:layout_below="@id/viewbottom"
+            android:layout_toRightOf="@id/buttonleft"
+            android:layout_marginTop="50dp"
+            android:text="Up" />
+
 
     </RelativeLayout>
 

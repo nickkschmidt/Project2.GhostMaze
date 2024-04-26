@@ -265,7 +265,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    int randomDir = 0;
+    int randomDir1 = 0;
+    int randomDir2 = 0;
+    int randomDir3 = 0;
+    int randomDir4 = 0;
 
     public static int ghost1PosX;
     public static int ghost1PosY;
@@ -288,90 +291,94 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkGhosts() {
-        boolean flag = true;
-        while (flag) {
         setGhostCoords();
-            if ((mazeArray[ghost1PosY][ghost1PosX] != 0) && (mazeArray[ghost2PosY][ghost2PosX] != 0) && (mazeArray[ghost3PosY][ghost3PosX] != 0) && (mazeArray[ghost4PosY][ghost4PosX] != 0)) {
-                flag = false;
-            };
+        boolean ghostinwall = true;
+
+        while (ghostinwall) {
+            ghostinwall = false; // Reset ghostinwall to false before checking ghosts
+
+            // Check each ghost's position
+            if ((ghost1PosY) >= 0 && (ghost1PosY) < 21 &&
+                    (ghost1PosX) >= 0 && (ghost1PosX) < 13 &&
+                    mazeArray[ghost1PosY][ghost1PosX] == 0) {
+                setGhostCoords(); // Update ghost coordinates if ghost 1 is in a wall
+                ghostinwall = true; // Set ghostinwall to true if ghost 1 is in a wall
+            }
+
+            if ((ghost2PosY) >= 0 && (ghost2PosY) < 21 &&
+                    (ghost2PosX) >= 0 && (ghost2PosX) < 13 &&
+                    mazeArray[ghost2PosY][ghost2PosX] == 0) {
+                setGhostCoords(); // Update ghost coordinates if ghost 1 is in a wall
+                ghostinwall = true; // Set ghostinwall to true if ghost 1 is in a wall
+            }
+
+            if ((ghost3PosY) >= 0 && (ghost3PosY) < 21 &&
+                    (ghost3PosX) >= 0 && (ghost3PosX) < 13 &&
+                    mazeArray[ghost3PosY][ghost3PosX] == 0) {
+                setGhostCoords(); // Update ghost coordinates if ghost 1 is in a wall
+                ghostinwall = true; // Set ghostinwall to true if ghost 1 is in a wall
+            }
+
+            if ((ghost4PosY) >= 0 && (ghost4PosY) < 21 &&
+                    (ghost4PosX) >= 0 && (ghost4PosX) < 13 &&
+                    mazeArray[ghost4PosY][ghost4PosX] == 0) {
+                setGhostCoords(); // Update ghost coordinates if ghost 1 is in a wall
+                ghostinwall = true; // Set ghostinwall to true if ghost 1 is in a wall
+            }
         }
     }
+
 
     public void initGhosts() {
         checkGhosts();
             ImageView ghost1Img = findViewById(R.id.ghost1);
             RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) ghost1Img.getLayoutParams();
-            params1.leftMargin = (ghost1PosX * 66);
-            params1.topMargin = (ghost1PosY * 66);
+            params1.leftMargin = ((ghost1PosX + 2) * 66);
+            params1.topMargin = ((ghost1PosY + 2) * 66);
 
             ImageView ghost2Img = findViewById(R.id.ghost2);
             RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) ghost2Img.getLayoutParams();
-            params2.leftMargin = (ghost2PosX * 66);
-            params2.topMargin = (ghost2PosY * 66);
+            params2.leftMargin = ((ghost2PosX + 2) * 66);
+            params2.topMargin = ((ghost2PosY + 2) * 66);
 
             ImageView ghost3Img = findViewById(R.id.ghost3);
             RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) ghost3Img.getLayoutParams();
-            params3.leftMargin = (ghost3PosX * 66);
-            params3.topMargin = (ghost3PosY * 66);
+            params3.leftMargin = ((ghost3PosX + 2) * 66);
+            params3.topMargin = ((ghost3PosY + 2) * 66);
 
             ImageView ghost4Img = findViewById(R.id.ghost4);
             RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) ghost4Img.getLayoutParams();
-            params4.leftMargin = (ghost4PosX * 66);
-            params4.topMargin = (ghost4PosY * 66);
- /*       ImageView ghost1 = findViewById(R.id.ghost1);
-        Random random1 = new Random();
-        RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) ghost1.getLayoutParams();
-        params1.leftMargin = random1.nextInt(13) * 66;
-        params1.topMargin = random1.nextInt(21) * 66;
-
-        ImageView ghost2 = findViewById(R.id.ghost2);
-        Random random2 = new Random();
-        RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) ghost2.getLayoutParams();
-        params2.leftMargin = random2.nextInt(13) * 66;
-        params2.topMargin = random2.nextInt(21) * 66;
-
-        ImageView ghost3 = findViewById(R.id.ghost3);
-        Random random3 = new Random();
-        RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) ghost3.getLayoutParams();
-        params1.leftMargin = random3.nextInt(13) * 66;
-        params1.topMargin = random3.nextInt(21) * 66;
-
-        ImageView ghost4 = findViewById(R.id.ghost4);
-        Random random4 = new Random();
-        RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) ghost4.getLayoutParams();
-        params1.leftMargin = random4.nextInt(13) * 66;
-        params1.topMargin = random4.nextInt(21) * 66;
-    */
+            params4.leftMargin = ((ghost4PosX + 2) * 66);
+            params4.topMargin = ((ghost4PosY + 2) * 66);
     }
 
     public void moveGhosts() {
-        Random random = new Random();
-        randomDir = random.nextInt(4) + 1;
-
+        Random random1 = new Random();
+        randomDir1 = random1.nextInt(4) + 1;
         ImageView ghostImageView1 = findViewById(R.id.ghost1);
         RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) ghostImageView1.getLayoutParams();
 
-        switch (randomDir) {
+        switch (randomDir1) {
             case 1:
-                if ((ghost1PosX + 1 < 13) && (mazeArray[ghost1PosY][ghost1PosX + 1] != 0)) {
+                if (validMove((ghost1PosX + 1), (ghost1PosY))) {
                     ghost1PosX += 1;
                     params1.leftMargin += 66;
                 }
                 break;
             case 2:
-                if ((ghost1PosX - 1 >= 0) && (mazeArray[ghost1PosY][ghost1PosX - 1] != 0)) {
+                if (validMove((ghost1PosX - 1), (ghost1PosY))) {
                     ghost1PosX -= 1;
                     params1.leftMargin -= 66;
                 }
                 break;
             case 3:
-                if ((ghost1PosY + 1 < 21) && (mazeArray[ghost1PosY + 1][ghost1PosX] != 0)) {
+                if (validMove((ghost1PosX), (ghost1PosY + 1))) {
                     ghost1PosY += 1;
                     params1.topMargin += 66;
                 }
                 break;
             case 4:
-                if ((ghost1PosY - 1 >= 0) && (mazeArray[ghost1PosY - 1][ghost1PosX] != 0)) {
+                if (validMove((ghost1PosX), (ghost1PosY - 1))) {
                     ghost1PosY -= 1;
                     params1.topMargin -= 66;
                 }
@@ -379,30 +386,32 @@ public class MainActivity extends AppCompatActivity {
         }
         ghostImageView1.setLayoutParams(params1);
 
+        Random random2 = new Random();
+        randomDir2 = random2.nextInt(4) + 1;
         ImageView ghostImageView2 = findViewById(R.id.ghost2);
         RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) ghostImageView2.getLayoutParams();
 
-        switch (randomDir) {
+        switch (randomDir2) {
             case 1:
-                if ((ghost2PosX + 1 < 13) && (mazeArray[ghost2PosY][ghost2PosX + 1] != 0)) {
+                if (validMove((ghost2PosX + 1), (ghost2PosY))) {
                     ghost2PosX += 1;
                     params2.leftMargin += 66;
                 }
                 break;
             case 2:
-                if ((ghost2PosX - 1 >= 0) && (mazeArray[ghost2PosY][ghost2PosX - 1] != 0)) {
+                if (validMove((ghost2PosX - 1), (ghost2PosY))) {
                     ghost2PosX -= 1;
                     params2.leftMargin -= 66;
                 }
                 break;
             case 3:
-                if ((ghost2PosY + 1 < 21) && (mazeArray[ghost2PosY + 1][ghost2PosX] != 0)) {
+                if (validMove((ghost2PosX), (ghost2PosY + 1))) {
                     ghost2PosY += 1;
                     params2.topMargin += 66;
                 }
                 break;
             case 4:
-                if ((ghost2PosY - 1 >= 0) && (mazeArray[ghost2PosY - 1][ghost2PosX] != 0)) {
+                if (validMove((ghost2PosX), (ghost2PosY - 1))) {
                     ghost2PosY -= 1;
                     params2.topMargin -= 66;
                 }
@@ -410,30 +419,32 @@ public class MainActivity extends AppCompatActivity {
         }
         ghostImageView2.setLayoutParams(params2);
 
+        Random random3 = new Random();
+        randomDir3 = random3.nextInt(4) + 1;
         ImageView ghostImageView3 = findViewById(R.id.ghost3);
         RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) ghostImageView3.getLayoutParams();
 
-        switch (randomDir) {
+        switch (randomDir3) {
             case 1:
-                if ((ghost3PosX + 1 < 13) && (mazeArray[ghost3PosY][ghost3PosX + 1] != 0)) {
+                if (validMove((ghost3PosX + 1), (ghost3PosY))) {
                     ghost3PosX += 1;
                     params3.leftMargin += 66;
                 }
                 break;
             case 2:
-                if ((ghost3PosX - 1 >= 0) && (mazeArray[ghost3PosY][ghost3PosX - 1] != 0)) {
+                if (validMove((ghost3PosX - 1), (ghost3PosY))) {
                     ghost3PosX -= 1;
                     params3.leftMargin -= 66;
                 }
                 break;
             case 3:
-                if ((ghost3PosY + 1 < 21) && (mazeArray[ghost3PosY + 1][ghost3PosX] != 0)) {
+                if (validMove((ghost3PosX), (ghost3PosY + 1))) {
                     ghost3PosY += 1;
                     params3.topMargin += 66;
                 }
                 break;
             case 4:
-                if ((ghost3PosY - 1 >= 0) && (mazeArray[ghost3PosY - 1][ghost3PosX] != 0)) {
+                if (validMove((ghost3PosX), (ghost3PosY - 1))) {
                     ghost3PosY -= 1;
                     params3.topMargin -= 66;
                 }
@@ -441,36 +452,46 @@ public class MainActivity extends AppCompatActivity {
         }
         ghostImageView3.setLayoutParams(params3);
 
+        Random random4 = new Random();
+        randomDir4 = random4.nextInt(4) + 1;
         ImageView ghostImageView4 = findViewById(R.id.ghost4);
-        RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) ghostImageView3.getLayoutParams();
+        RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) ghostImageView4.getLayoutParams();
 
-        switch (randomDir) {
+        switch (randomDir4) {
             case 1:
-                if ((ghost4PosX + 1 < 13) && (mazeArray[ghost4PosY][ghost4PosX + 1] != 0)) {
+                if (validMove((ghost4PosX + 1), (ghost4PosY))) {
                     ghost4PosX += 1;
                     params4.leftMargin += 66;
                 }
                 break;
             case 2:
-                if ((ghost4PosX - 1 >= 0) && (mazeArray[ghost4PosY][ghost4PosX - 1] != 0)) {
+                if (validMove((ghost4PosX - 1), (ghost4PosY))) {
                     ghost4PosX -= 1;
                     params4.leftMargin -= 66;
                 }
                 break;
             case 3:
-                if ((ghost4PosY + 1 < 21) && (mazeArray[ghost4PosY + 1][ghost4PosX] != 0)) {
+                if (validMove((ghost4PosX), (ghost4PosY + 1))) {
                     ghost4PosY += 1;
                     params4.topMargin += 66;
                 }
                 break;
             case 4:
-                if ((ghost4PosY - 1 >= 0) && (mazeArray[ghost4PosY - 1][ghost4PosX] != 0)) {
+                if (validMove((ghost4PosX), (ghost4PosY - 1))) {
                     ghost4PosY -= 1;
                     params4.topMargin -= 66;
                 }
                 break;
         }
         ghostImageView4.setLayoutParams(params4);
+    }
+
+    public boolean validMove(int x, int y) {
+        if (x >= 0 && x < 13 && y >= 0 && y < 21)
+            if (mazeArray[y][x] != 0) {
+                return true;
+        }
+        return false;
     }
 
 }

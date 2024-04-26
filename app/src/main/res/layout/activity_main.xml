@@ -232,18 +232,40 @@
             android:layout_marginTop="250dp"
             android:background="#2196F3" />
 
-        <!-- Dots -->
-
-        <!-- Add more ImageViews for additional dots -->
-
-        <!-- Pacman character -->
+        <!-- Pacman character + Ghost characters-->
         <ImageView
+            android:id="@+id/pacman"
             android:layout_width="19dp"
             android:layout_height="19dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/pacman" />
 
+        <ImageView
+            android:id="@+id/ghost1"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ghost" />
+
+        <ImageView
+            android:id="@+id/ghost2"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ghost" />
+
+        <ImageView
+            android:id="@+id/ghost3"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ghost" />
+
+        <ImageView
+            android:id="@+id/ghost4"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@drawable/ghost" />
+
+        <!-- Movement Buttons -->
         <Button
             android:id="@+id/buttonright"
             android:layout_width="105dp"
@@ -279,6 +301,17 @@
             android:layout_marginTop="50dp"
             android:text="Up" />
 
+        <!-- Score Element -->
+        <TextView
+            android:id="@+id/scoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewbottom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="115dp"
+            android:text="Score: 0"
+            android:textColor="#808c9e"
+            android:textSize="50sp" />
 
     </RelativeLayout>
 

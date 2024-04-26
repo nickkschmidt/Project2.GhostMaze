@@ -287,13 +287,14 @@ public class MainActivity extends AppCompatActivity {
         ghost4PosY = Ghosts.setGhostY();
     }
 
-    public int checkGhosts() {
+    public void checkGhosts() {
         boolean flag = true;
         while (flag) {
         setGhostCoords();
-            flag = (mazeArray[ghost1PosY][ghost1PosX] == 0) || (mazeArray[ghost2PosY][ghost2PosX] == 0) || (mazeArray[ghost3PosY][ghost3PosX] == 0) || (mazeArray[ghost4PosY][ghost4PosX] == 0);
+            if ((mazeArray[ghost1PosY][ghost1PosX] != 0) && (mazeArray[ghost2PosY][ghost2PosX] != 0) && (mazeArray[ghost3PosY][ghost3PosX] != 0) && (mazeArray[ghost4PosY][ghost4PosX] != 0)) {
+                flag = false;
+            };
         }
-        return 0;
     }
 
     public void initGhosts() {

@@ -8,21 +8,40 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
-        android:id="@+id/mazeLayout"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#000000"
         tools:layout_editor_absoluteX="204dp"
         tools:layout_editor_absoluteY="-44dp">
-        </RelativeLayout>
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Score: 0"
-        android:textColor="#808c9e"
-        android:textSize="50sp" />
+
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="300dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="400dp"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/scoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/anchor"
+            android:layout_centerHorizontal="true"
+            android:text="Score: "
+            android:textColor="#808c9e"
+            android:textSize="50sp" />
+
+        <Button
+            android:id="@+id/buttonreset"
+            android:layout_width="105dp"
+            android:layout_height="58dp"
+            android:layout_below="@id/anchor"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:text="Reset" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

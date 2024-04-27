@@ -81,13 +81,20 @@ public class MainActivity extends AppCompatActivity {
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Call the moveUp function
-                setContentView(R.layout.layout);
+                for (int i = 0; i < 21; i++) {
+                    for (int j = 0; j < 13; j++) {
+                        if (mazeArray[i][j] == 2) {
+                            mazeArray[i][j] = 1;
+                        }
+                    }
+                }
+                updateMaze(mazeLayout, 21, 13);
             }
         });
-
         initGhosts();
     }
+
+
 
     public static int score = 0;
     TextView scoreTextView;
@@ -97,6 +104,33 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonleft;
     private Button buttonup;
     private Button temp;
+    private Button buttonreset;
+
+    static int[][] mazeArraytemp = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
+                                            maze coordinates are in (x, y)  */
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //0
+            {2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2}, //1
+            {2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 2, 0, 2}, //2
+            {2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2}, //3
+            {2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //4
+            {2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2}, //5
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //6
+            {2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2}, //7
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //8
+            {2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2}, //9
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2}, //10
+            {2, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2}, //11
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2}, //12
+            {2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2}, //13
+            {2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 2, 2}, //14
+            {2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2}, //15
+            {2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 2}, //16
+            {2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 2}, //17
+            {2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2}, //18
+            {2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2}, //19
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //20
+
+    };
 
     static int[][] mazeArray = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
@@ -172,8 +206,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
         if (gameComplete()) {
             setContentView(R.layout.layout);
+            scoreTextView = findViewById(R.id.scoreTextView);
+            scoreTextView.setText("Score: " + score);
+            buttonreset= findViewById(R.id.buttonreset);
+            buttonreset.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resetGame();
+                }
+            });
         }
     }
 
@@ -186,6 +230,64 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void resetGame() {
+        setContentView(R.layout.activity_main);
+        score = 0;
+        for (int i = 0; i < 21; i++) {
+            for (int j = 0; j < 13; j++) {
+                mazeArray[i][j] = mazeArraytemp[i][j];
+            }
+        }
+        RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
+        updateMaze(mazeLayout, 21, 13);
+        initGhosts();
+
+        temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < 21; i++) {
+                    for (int j = 0; j < 13; j++) {
+                        if (mazeArray[i][j] == 2) {
+                            mazeArray[i][j] = 1;
+                        }
+                    }
+                }
+                updateMaze(mazeLayout, 21, 13);
+            }
+        });
+
+        buttonright.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveRight function
+                moveRight();
+            }
+        });
+
+        buttondown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveDown function
+                moveDown();
+            }
+        });
+
+        buttonleft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveDown function
+                moveLeft();
+            }
+        });
+
+        buttonup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveDown function
+                moveUp();
+            }
+        });
+    }
 
     public static int pacmanPositionX = 0;
     public static int pacmanPositionY = 0;

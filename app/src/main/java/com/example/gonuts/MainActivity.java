@@ -1,5 +1,6 @@
 package com.example.gonuts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         buttonup = findViewById(R.id.buttonup);
 
+        temp = findViewById(R.id.temp);
+
         buttonright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the moveUp function
+                setContentView(R.layout.layout);
+            }
+        });
+
         initGhosts();
     }
 
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttondown;
     private Button buttonleft;
     private Button buttonup;
+    private Button temp;
 
     static int[][] mazeArray = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
@@ -149,10 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 dot.setLayoutParams(params);
                 if (mazeArray[i][j] == 2) {
                     dot.setImageResource(R.drawable.dot);
-                } else if (mazeArray[i][j] == 1){
+                } else if (mazeArray[i][j] == 1) {
                     dot.setImageResource(R.drawable.dotblue);
-                }
-                else if (mazeArray[i][j] == 0) {
+                } else if (mazeArray[i][j] == 0) {
                     dot.setImageResource(R.drawable.dotblack);
                 }
                 // Add the dot to the maze layout
@@ -161,7 +172,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        if (gameComplete()) {
+            setContentView(R.layout.layout);
         }
+    }
+
+    public boolean gameComplete() {
+        for (int i = 0; i < 21; i++) {
+            for (int j = 0; j < 13; j++) {
+                if (mazeArray[i][j] == 2) return false;
+            }
+        }
+        return true;
+    }
+
 
     public static int pacmanPositionX = 0;
     public static int pacmanPositionY = 0;

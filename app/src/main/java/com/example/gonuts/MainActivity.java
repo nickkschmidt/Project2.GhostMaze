@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            //    pacmanPositionX = ghost1PosX;
+            //    pacmanPositionY = ghost1PosY;
                 for (int i = 0; i < 21; i++) {
                     for (int j = 0; j < 13; j++) {
                         if (mazeArray[i][j] == 2) {
@@ -105,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonup;
     private Button temp;
     private Button buttonreset;
-
     static int[][] mazeArraytemp = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //0
@@ -207,28 +208,74 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        if ((pacmanPositionX != 0) && (pacmanPositionY != 0)) {
+            if ((pacmanPositionY == ghost1PosY) && (pacmanPositionX == ghost1PosX)) {
+                setContentView(R.layout.layout);
+                scoreTextView = findViewById(R.id.scoreTextView);
+                scoreTextView.setText("Game Over!");
+                buttonreset= findViewById(R.id.buttonreset);
+                buttonreset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        resetGame();
+                    }
+                });
+            }
+        }
+
         if (gameComplete()) {
-            setContentView(R.layout.layout);
-            scoreTextView = findViewById(R.id.scoreTextView);
-            scoreTextView.setText("Score: " + score);
-            buttonreset= findViewById(R.id.buttonreset);
-            buttonreset.setOnClickListener(new View.OnClickListener() {
+            callEnd();
+        }
+
+
+       /*if (gameOver()) {
+            end = false;
+            boolean flag = false;
+            setContentView(R.layout.layout2);
+            buttonreset2 = findViewById(R.id.buttonreset2);
+            buttonreset2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    resetGame();
+                    for (int i = 0; i < 21; i++) {
+                        for (int j = 0; j < 13; j++) {
+                            if (mazeArray[i][j] == 2) {
+                                mazeArray[i][j] = 1;
+                            }
+                        }
+                    }
+                    score = 0;
+                    gameComplete();
+                    updateMaze(mazeLayout, 21, 13);
+
                 }
             });
-        }
+        }*/
+    }
+
+    void callEnd() {
+        setContentView(R.layout.layout);
+        scoreTextView = findViewById(R.id.scoreTextView);
+        scoreTextView.setText("Score: " + score);
+        buttonreset= findViewById(R.id.buttonreset);
+        buttonreset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetGame();
+            }
+        });
     }
 
     public boolean gameComplete() {
         for (int i = 0; i < 21; i++) {
             for (int j = 0; j < 13; j++) {
-                if (mazeArray[i][j] == 2) return false;
+                if (mazeArray[i][j] == 2) {
+                    return false;
+                }
             }
         }
         return true;
     }
+
 
     public void resetGame() {
         setContentView(R.layout.activity_main);
@@ -240,7 +287,19 @@ public class MainActivity extends AppCompatActivity {
         }
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         updateMaze(mazeLayout, 21, 13);
+        pacmanPositionX = 0;
+        pacmanPositionY = 0;
         initGhosts();
+
+        buttonright = findViewById(R.id.buttonright);
+
+        buttondown = findViewById(R.id.buttondown);
+
+        buttonleft = findViewById(R.id.buttonleft);
+
+        buttonup = findViewById(R.id.buttonup);
+
+        temp = findViewById(R.id.temp);
 
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,47 +355,53 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
             if ((pacmanPositionX + 1 < 13) && (mazeArray[pacmanPositionY][pacmanPositionX + 1] != 0)) {
-                pacmanPositionX += 1;
-                score++;
-                scoreTextView = findViewById(R.id.scoreTextView);
-                scoreTextView.setText("Score: " + score);
-                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
-                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
-                    updateMaze(mazeLayout, 21, 13);
+                if (!isGhost((pacmanPositionX + 1), (pacmanPositionY))) {
+                    pacmanPositionX += 1;
+                    score++;
+                    scoreTextView = findViewById(R.id.scoreTextView);
+                    scoreTextView.setText("Score: " + score);
+                    if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                        mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                        updateMaze(mazeLayout, 21, 13);
+                    }
+                    ImageView pacmanImageView = findViewById(R.id.pacman);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
+                    params.leftMargin += 66;
+                    pacmanImageView.setLayoutParams(params);
+                    moveGhosts();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
                 }
-                ImageView pacmanImageView = findViewById(R.id.pacman);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
-                params.leftMargin += 66;
-                pacmanImageView.setLayoutParams(params);
-                moveGhosts();
-            }
-
-            else {
-                Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "You cannot move in that direction!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public void moveLeft() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
+
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
             if ((pacmanPositionX - 1 >= 0) && (mazeArray[pacmanPositionY][pacmanPositionX - 1] != 0)) {
-                pacmanPositionX -= 1;
-                score++;
-                scoreTextView = findViewById(R.id.scoreTextView);
-                scoreTextView.setText("Score: " + score);
-                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
-                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
-                    updateMaze(mazeLayout, 21, 13);
+                if (!isGhost((pacmanPositionX - 1), (pacmanPositionY))) {
+                    pacmanPositionX -= 1;
+                    score++;
+                    scoreTextView = findViewById(R.id.scoreTextView);
+                    scoreTextView.setText("Score: " + score);
+                    if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                        mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                        updateMaze(mazeLayout, 21, 13);
+                    }
+                    ImageView pacmanImageView = findViewById(R.id.pacman);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
+                    params.leftMargin -= 66;
+                    pacmanImageView.setLayoutParams(params);
+                    moveGhosts();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
                 }
-                ImageView pacmanImageView = findViewById(R.id.pacman);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
-                params.leftMargin -= 66;
-                pacmanImageView.setLayoutParams(params);
-                moveGhosts();
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "You cannot move in that direction!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -345,24 +410,26 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
             if ((pacmanPositionY + 1 < 21) && (mazeArray[pacmanPositionY + 1][pacmanPositionX] != 0)) {
-                pacmanPositionY += 1;
-                score++;
-                scoreTextView = findViewById(R.id.scoreTextView);
-                scoreTextView.setText("Score: " + score);
-                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
-                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
-                    updateMaze(mazeLayout, 21, 13);
+                if (!isGhost((pacmanPositionX), (pacmanPositionY + 1))) {
+                    pacmanPositionY += 1;
+                    score++;
+                    scoreTextView = findViewById(R.id.scoreTextView);
+                    scoreTextView.setText("Score: " + score);
+                    if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                        mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                        updateMaze(mazeLayout, 21, 13);
+                    }
+                    ImageView pacmanImageView = findViewById(R.id.pacman);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
+                    params.topMargin += 66;
+                    pacmanImageView.setLayoutParams(params);
+                    moveGhosts();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
                 }
-                ImageView pacmanImageView = findViewById(R.id.pacman);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
-                params.topMargin += 66;
-                pacmanImageView.setLayoutParams(params);
-                moveGhosts();
+            } else {
+                Toast.makeText(getApplicationContext(), "You cannot move in that direction!", Toast.LENGTH_SHORT).show();
             }
-            else {
-                Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
-            }
-
         }
     }
 
@@ -370,25 +437,27 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
             if ((pacmanPositionY - 1 >= 0) && (mazeArray[pacmanPositionY - 1][pacmanPositionX] != 0)) {
-                pacmanPositionY -= 1;
-                score++;
-                scoreTextView = findViewById(R.id.scoreTextView);
-                scoreTextView.setText("Score: " + score);
-                if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
-                    mazeArray[pacmanPositionY][pacmanPositionX] = 1;
-                    updateMaze(mazeLayout, 21, 13);
+                if (!isGhost((pacmanPositionX), (pacmanPositionY - 1))) {
+                    pacmanPositionY -= 1;
+                    score++;
+                    scoreTextView = findViewById(R.id.scoreTextView);
+                    scoreTextView.setText("Score: " + score);
+                    if (mazeArray[pacmanPositionY][pacmanPositionX] == 2) {
+                        mazeArray[pacmanPositionY][pacmanPositionX] = 1;
+                        updateMaze(mazeLayout, 21, 13);
+                    }
+                    ImageView pacmanImageView = findViewById(R.id.pacman);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
+                    params.topMargin -= 66F;
+                    pacmanImageView.setLayoutParams(params);
+                    moveGhosts();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
                 }
-                ImageView pacmanImageView = findViewById(R.id.pacman);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pacmanImageView.getLayoutParams();
-                params.topMargin -= 66F;
-                pacmanImageView.setLayoutParams(params);
-                moveGhosts();
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "You cannot movein that Direction!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "You cannot move in that direction!", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     int randomDir1 = 0;
@@ -610,6 +679,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         ghostImageView4.setLayoutParams(params4);
+    }
+
+    private boolean isGhost(int x, int y) {
+        return (x == ghost1PosX && y == ghost1PosY) ||
+                (x == ghost2PosX && y == ghost2PosY) ||
+                (x == ghost3PosX && y == ghost3PosY) ||
+                (x == ghost4PosX && y == ghost4PosY);
     }
 
     public boolean validMove(int x, int y) {

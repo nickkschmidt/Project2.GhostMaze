@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1073576846523",
+    "project_id": "project-2-ghost-maze",
+    "storage_bucket": "project-2-ghost-maze.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073576846523:android:01e277ddeafade73ccb59e",
+        "android_client_info": {
+          "package_name": "com.example.gonuts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ2qoBQiSzAoqNeRR1zosbYEO0KFYNVVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

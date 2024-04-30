@@ -14,23 +14,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import java.util.Random;
 
+import com.google.firebase.FirebaseApp;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    /**
+     * Initializes the activity.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
+        });*/
 
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         updateMaze(mazeLayout, 21, 13);
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         buttonup = findViewById(R.id.buttonup);
 
         temp = findViewById(R.id.temp);
+
+        temp2 = findViewById(R.id.temp2);
 
         buttonright.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +101,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initGhosts();
+
+        temp2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addScore();
+            }
+        });
     }
+
 
 
 
@@ -106,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonleft;
     private Button buttonup;
     private Button temp;
+    private Button temp2;
     private Button buttonreset;
     static int[][] mazeArraytemp = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
@@ -159,7 +175,12 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-
+    /**
+     * Updates the maze layout based on the provided dimensions.
+     * @param mazeLayout The layout containing the maze.
+     * @param rows The number of rows in the maze.
+     * @param cols The number of columns in the maze.
+     */
     public void updateMaze(RelativeLayout mazeLayout, int rows, int cols) {
         // Define dot size
         int dotSize = 5; // in dp
@@ -252,6 +273,10 @@ public class MainActivity extends AppCompatActivity {
         }*/
     }
 
+    /**
+     * Sets the content view to a specified layout, updates the score TextView with the current score,
+     * and attaches a click listener to the reset button to reset the game when clicked.
+     */
     void callEnd() {
         setContentView(R.layout.layout);
         scoreTextView = findViewById(R.id.scoreTextView);
@@ -265,6 +290,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks if the game is complete by iterating through the mazeArray.
+     *
+     * @return true if all elements of the mazeArray are not equal to 2, indicating that the game is complete;
+     * false otherwise.
+     */
     public boolean gameComplete() {
         for (int i = 0; i < 21; i++) {
             for (int j = 0; j < 13; j++) {
@@ -276,7 +307,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
+    /**
+     * Resets the game to its initial state, including score, maze layout, Pacman and ghost positions,
+     * and button click listeners.
+     */
     public void resetGame() {
         setContentView(R.layout.activity_main);
         score = 0;
@@ -301,6 +335,8 @@ public class MainActivity extends AppCompatActivity {
 
         temp = findViewById(R.id.temp);
 
+        temp2 = findViewById(R.id.temp2);
+
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,6 +348,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 updateMaze(mazeLayout, 21, 13);
+            }
+        });
+
+        temp2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addScore();
             }
         });
 
@@ -351,6 +394,12 @@ public class MainActivity extends AppCompatActivity {
     public static int pacmanPositionX = 0;
     public static int pacmanPositionY = 0;
 
+    /**
+     * Moves Pacman to the right within the maze layout.
+     * Checks if the next position is a valid move and updates Pacman's position accordingly.
+     * Also updates the score, updates the score display, moves Pacman's image view, and
+     * triggers ghost movement.
+     */
     public void moveRight() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
@@ -378,6 +427,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Moves Pacman to the left within the maze layout.
+     * Checks if the next position is a valid move and updates Pacman's position accordingly.
+     * Also updates the score, updates the score display, moves Pacman's image view, and
+     * triggers ghost movement.
+     */
     public void moveLeft() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
 
@@ -406,6 +462,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Moves Pacman down within the maze layout.
+     * Checks if the next position is a valid move and updates Pacman's position accordingly.
+     * Also updates the score, updates the score display, moves Pacman's image view, and
+     * triggers ghost movement.
+     */
     public void moveDown() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
@@ -433,6 +495,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Moves Pacman up within the maze layout.
+     * Checks if the next position is a valid move and updates Pacman's position accordingly.
+     * Also updates the score, updates the score display, moves Pacman's image view, and
+     * triggers ghost movement.
+     */
     public void moveUp() {
         RelativeLayout mazeLayout = findViewById(R.id.mazeLayout);
         if (mazeArray[pacmanPositionY][pacmanPositionX] > 0) {
@@ -474,6 +542,11 @@ public class MainActivity extends AppCompatActivity {
     public static int ghost4PosX;
     public static int ghost4PosY;
 
+    /**
+     * Sets the coordinates for each ghost in the maze.
+     * Calls the static methods setGhostX() and setGhostY() from the Ghosts class
+     * to randomly assign X and Y coordinates to each ghost.
+     */
     public void setGhostCoords() {
         ghost1PosX = Ghosts.setGhostX();
         ghost1PosY = Ghosts.setGhostY();
@@ -485,6 +558,12 @@ public class MainActivity extends AppCompatActivity {
         ghost4PosY = Ghosts.setGhostY();
     }
 
+    /**
+     * Checks the positions of each ghost in the maze and ensures they are not in a wall.
+     * If any ghost is found to be in a wall (position with value 0), it updates their coordinates
+     * to a valid position within the maze.
+     * Uses the setGhostCoords() method to update ghost coordinates.
+     */
     public void checkGhosts() {
         setGhostCoords();
         boolean ghostinwall = true;
@@ -523,7 +602,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Initializes the positions of all ghosts in the maze by updating their image views' layout parameters.
+     * This method ensures that each ghost is positioned correctly in the maze and not inside a wall.
+     * It calls the checkGhosts() method to verify the validity of ghost positions.
+     * After verifying the ghost positions, it updates the layout parameters of each ghost's image view
+     * to reflect their positions in the maze.
+     */
     public void initGhosts() {
         checkGhosts();
             ImageView ghost1Img = findViewById(R.id.ghost1);
@@ -547,6 +632,12 @@ public class MainActivity extends AppCompatActivity {
             params4.topMargin = ((ghost4PosY + 2) * 66);
     }
 
+    /**
+     * Moves all ghosts randomly within the maze.
+     * Each ghost's movement direction is determined randomly, and if the move is valid, the ghost's position is updated accordingly.
+     * The method ensures that each ghost's movement is within the maze boundaries and avoids walls.
+     * After determining the new position for each ghost, it updates their respective image views' layout parameters to reflect the changes.
+     */
     public void moveGhosts() {
         Random random1 = new Random();
         randomDir1 = random1.nextInt(4) + 1;
@@ -681,6 +772,13 @@ public class MainActivity extends AppCompatActivity {
         ghostImageView4.setLayoutParams(params4);
     }
 
+    /**
+     * Checks if the given coordinates correspond to the position of any ghost on the maze.
+     *
+     * @param x The x-coordinate to check.
+     * @param y The y-coordinate to check.
+     * @return {@code true} if there is a ghost at the specified coordinates, {@code false} otherwise.
+     */
     private boolean isGhost(int x, int y) {
         return (x == ghost1PosX && y == ghost1PosY) ||
                 (x == ghost2PosX && y == ghost2PosY) ||
@@ -688,6 +786,13 @@ public class MainActivity extends AppCompatActivity {
                 (x == ghost4PosX && y == ghost4PosY);
     }
 
+    /**
+     * Checks if the specified coordinates represent a valid move within the maze.
+     *
+     * @param x The x-coordinate of the move to check.
+     * @param y The y-coordinate of the move to check.
+     * @return {@code true} if the move is valid (i.e., not out of bounds and not into a wall), {@code false} otherwise.
+     */
     public boolean validMove(int x, int y) {
         if (x >= 0 && x < 13 && y >= 0 && y < 21)
             if (mazeArray[y][x] != 0) {
@@ -696,8 +801,9 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    public void addScore() {
+        FirebaseScoreManager fireScore = new FirebaseScoreManager();
+        fireScore.addScorefire("Scores", score);
+    }
+
 }
-
-
-
-

@@ -16,10 +16,6 @@ public class FirebaseScoreManager {
 
         // Get reference to the "scores" node in the database
         scoresRef = database.getReference("Scores");
-        if (scoresRef == null) {
-            // Handle initialization failure
-            Log.e("FirebaseScoreManager", "Database reference is null");
-        }
     }
 
     public void addScorefire(String nodeName, int score) {

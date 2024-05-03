@@ -32,19 +32,22 @@ android {
     }
 }
 
-
-
 dependencies {
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    implementation("org.testng:testng:6.9.6")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.common)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+
+
+    configurations.all {
+        exclude(group = "org.hamcrest")
+    }
 }

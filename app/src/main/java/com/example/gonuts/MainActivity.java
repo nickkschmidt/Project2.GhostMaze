@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     private Button temp;
     private Button temp2;
     private Button buttonreset;
-    static int[][] mazeArraytemp = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
+    public static int[][] mazeArraytemp = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //0
             {2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2}, //1
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    static int[][] mazeArray = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
+    public static int[][] mazeArray = {         /* 0 = wall/no path, 1 = path + no pellet, 2 = path + pellet,
                                             maze coordinates are in (x, y)  */
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, //0
             {2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2}, //1
@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
             if ((pacmanPositionY == ghost1PosY) && (pacmanPositionX == ghost1PosX)) {
                 setContentView(R.layout.layout);
                 scoreTextView = findViewById(R.id.scoreTextView);
+
                 scoreTextView.setText("Game Over!");
                 buttonreset= findViewById(R.id.buttonreset);
                 buttonreset.setOnClickListener(new View.OnClickListener() {
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets the content view to a specified layout, updates the score TextView with the current score,
      * and attaches a click listener to the reset button to reset the game when clicked.
      */
-    void callEnd() {
+    public void callEnd() {
         setContentView(R.layout.layout);
         scoreTextView = findViewById(R.id.scoreTextView);
         scoreTextView.setText("Score: " + score);
@@ -801,6 +802,12 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Adds the current score to the Firebase database.
+     *
+     * This method creates a FirebaseScoreManager instance and uses it to add the
+     * current score to the "Scores" collection in the Firebase database.
+     */
     public void addScore() {
         FirebaseScoreManager fireScore = new FirebaseScoreManager();
         fireScore.addScorefire("Scores", score);
